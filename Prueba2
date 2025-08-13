@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inocuidad y Calidad de Alimentos - Curso Interactivo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .interactive-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .interactive-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease;
+        }
+        @keyframes modalSlideIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .concept-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+        }
+        .game-container {
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .memorama-card {
+            aspect-ratio: 1;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        .memorama-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .memorama-card.flipped .memorama-card-inner {
+            transform: rotateY(180deg);
+        }
+        .memorama-card-front, .memorama-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            font-size: 12px;
+            text-align: center;
+        }
+        .memorama-card-back {
+            transform: rotateY(180deg);
+        }
+        .draggable {
+            cursor: grab;
+            transition: all 0.3s ease;
+        }
+        .draggable:hover {
+            transform: scale(1.05);
+        }
+        .draggable.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+        .drop-zone {
+            min-height: 60px;
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .drop-zone.drag-over {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .drop-zone.correct {
+            border-color: #10b981;
+            background-color: #ecfdf5;
+        }
+        .flashcard {
+            min-height: 300px;
+            perspective: 1000px;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-50 to-blue-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
+                        <span class="text-white text-xl font-bold">🍎</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">Inocuidad y Calidad de Alimentos</h1>
+                        <p class="text-gray-600">Curso Interactivo</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-gray-500">Explora • Aprende • Interactúa</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+        <!-- Introduction Section -->
+        <section class="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <div class="text-center mb-6">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Bienvenido al Curso Interactivo</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    Explora los conceptos fundamentales de inocuidad y calidad alimentaria a través de contenido interactivo. 
+                    Haz clic en cada tema para profundizar en el conocimiento.
+                </p>
+            </div>
+        </section>
+
+        <!-- MVZ Role Section -->
+        <section class="bg-gradient-to-r from-blue-600 to-green-600 rounded-xl shadow-lg p-8 mb-8 text-white">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold mb-4">El Rol del Médico Veterinario Zootecnista</h2>
+                <p class="text-xl font-medium mb-2">Aprender a proteger y mejorar la calidad de los alimentos que consumimos es un compromiso con la salud de todos</p>
+                <div class="bg-white bg-opacity-20 rounded-lg p-4 mt-6">
+                    <p class="text-lg italic">"Cada paso que das hacia la calidad y la inocuidad alimentaria, es un paso hacia un mundo más saludable"</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Impact Statistics -->
+        <section class="bg-red-50 border-l-4 border-red-500 rounded-xl shadow-lg p-8 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold text-red-800 mb-4">Impacto Global de las ETA</h3>
+                    <p class="text-red-700 mb-4">
+                        "La inocuidad alimentaria es crucial para prevenir enfermedades transmitidas por alimentos, las cuales afectan a millones de personas cada año. La calidad también juega un rol fundamental al garantizar que los productos no solo sean seguros, sino también nutritivos y de buen sabor."
+                    </p>
+                    <div class="bg-white p-4 rounded-lg border border-red-200">
+                        <p class="text-red-800 font-bold text-lg">Según la OMS:</p>
+                        <p class="text-red-700">600 millones de personas (1 de cada 10) enferman por alimentos contaminados</p>
+                        <p class="text-red-700 font-semibold">420,000 muertes anuales</p>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <svg class="w-64 h-64 mx-auto" viewBox="0 0 200 200" fill="none">
+                        <!-- Mundo -->
+                        <circle cx="100" cy="100" r="80" fill="#3B82F6" opacity="0.2"/>
+                        <circle cx="100" cy="100" r="70" fill="#3B82F6" opacity="0.3"/>
+                        <!-- Continentes simplificados -->
+                        <path d="M60 80 Q80 70 100 80 Q120 70 140 80 L140 120 Q100 110 60 120 Z" fill="#10B981"/>
+                        <path d="M70 90 Q90 85 110 90 Q130 85 130 100 L110 110 Q90 105 70 110 Z" fill="#059669"/>
+                        <!-- Símbolos de alerta -->
+                        <circle cx="80" cy="90" r="3" fill="#EF4444"/>
+                        <circle cx="120" cy="95" r="3" fill="#EF4444"/>
+                        <circle cx="100" cy="110" r="3" fill="#EF4444"/>
+                        <!-- Estadística visual -->
+                        <text x="100" y="160" text-anchor="middle" class="text-sm font-bold" fill="#DC2626">600M afectados</text>
+                        <text x="100" y="175" text-anchor="middle" class="text-xs" fill="#DC2626">420K muertes/año</text>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Farm to Table Process -->
+        <section class="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">De la Granja a la Mesa: El MVZ como Guardian</h2>
+            <p class="text-center text-gray-600 mb-8">El alumno aplicará conocimientos para garantizar alimentos de origen animal seguros y de alta calidad.</p>
+            
+            <!-- Process Flow -->
+            <div class="relative">
+                <!-- Flow Line -->
+                <div class="absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-green-400 via-blue-400 to-purple-400 transform -translate-y-1/2 hidden md:block"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+                    <!-- Stage 1: Materia Prima -->
+                    <div class="bg-green-50 rounded-xl p-6 border-2 border-green-200 text-center">
+                        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-12 h-12" viewBox="0 0 100 100" fill="none">
+                                <!-- Granja -->
+                                <rect x="20" y="60" width="60" height="30" fill="#10B981" rx="5"/>
+                                <rect x="30" y="50" width="40" height="20" fill="#059669" rx="3"/>
+                                <polygon points="25,50 50,30 75,50" fill="#DC2626"/>
+                                <!-- Animales -->
+                                <circle cx="35" cy="75" r="4" fill="#FFFFFF"/>
+                                <circle cx="50" cy="75" r="4" fill="#FFFFFF"/>
+                                <circle cx="65" cy="75" r="4" fill="#FFFFFF"/>
+                                <!-- MVZ -->
+                                <circle cx="85" cy="70" r="6" fill="#3B82F6"/>
+                                <rect x="82" y="76" width="6" height="10" fill="#3B82F6"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-green-800 mb-3">1. Supervisión de Materia Prima</h3>
+                        <p class="text-sm text-green-700">
+                            Inspecciones en mataderos para verificar que los animales han sido sacrificados en condiciones adecuadas y que la carne es apta para consumo humano.
+                        </p>
+                        <div class="mt-4 bg-green-100 rounded-lg p-2">
+                            <span class="text-xs font-medium text-green-800">🔍 Verificación TIF</span>
+                        </div>
+                    </div>
+
+                    <!-- Stage 2: Procesamiento -->
+                    <div class="bg-blue-50 rounded-xl p-6 border-2 border-blue-200 text-center">
+                        <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-12 h-12" viewBox="0 0 100 100" fill="none">
+                                <!-- Planta procesadora -->
+                                <rect x="15" y="40" width="70" height="40" fill="#3B82F6" rx="5"/>
+                                <rect x="25" y="30" width="50" height="20" fill="#1D4ED8" rx="3"/>
+                                <rect x="35" y="50" width="8" height="15" fill="#FFFFFF"/>
+                                <rect x="47" y="50" width="8" height="15" fill="#FFFFFF"/>
+                                <rect x="59" y="50" width="8" height="15" fill="#FFFFFF"/>
+                                <!-- Termómetro -->
+                                <rect x="75" y="45" width="3" height="15" fill="#EF4444"/>
+                                <circle cx="76.5" cy="62" r="3" fill="#EF4444"/>
+                                <!-- MVZ supervisando -->
+                                <circle cx="25" cy="35" r="5" fill="#10B981"/>
+                                <rect x="23" y="40" width="4" height="8" fill="#10B981"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-blue-800 mb-3">2. Control de Procesos</h3>
+                        <p class="text-sm text-blue-700">
+                            Supervisión de procedimientos de manejo, seguimiento de normativas TIF, monitoreo de temperatura e higiene en cada etapa del procesamiento.
+                        </p>
+                        <div class="mt-4 bg-blue-100 rounded-lg p-2">
+                            <span class="text-xs font-medium text-blue-800">🌡️ Control Continuo</span>
+                        </div>
+                    </div>
+
+                    <!-- Stage 3: Certificación -->
+                    <div class="bg-purple-50 rounded-xl p-6 border-2 border-purple-200 text-center">
+                        <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-12 h-12" viewBox="0 0 100 100" fill="none">
+                                <!-- Producto final -->
+                                <rect x="30" y="40" width="40" height="25" fill="#8B5CF6" rx="5"/>
+                                <rect x="35" y="45" width="30" height="15" fill="#FFFFFF" rx="2"/>
+                                <!-- Sello TIF -->
+                                <circle cx="50" cy="52" r="8" fill="#10B981"/>
+                                <text x="50" y="55" text-anchor="middle" class="text-xs font-bold" fill="#FFFFFF">TIF</text>
+                                <!-- MVZ certificando -->
+                                <circle cx="70" cy="30" r="5" fill="#059669"/>
+                                <rect x="68" y="35" width="4" height="8" fill="#059669"/>
+                                <!-- Check mark -->
+                                <path d="M75 25 L78 28 L85 20" stroke="#10B981" stroke-width="2" fill="none"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-purple-800 mb-3">3. Inspección Final y Certificación</h3>
+                        <p class="text-sm text-purple-700">
+                            Inspecciones finales para verificar estándares de calidad. Solo después de rigurosas inspecciones, los productos reciben certificación TIF.
+                        </p>
+                        <div class="mt-4 bg-purple-100 rounded-lg p-2">
+                            <span class="text-xs font-medium text-purple-800">✅ Sello de Garantía</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Course Objective -->
+        <section class="bg-gradient-to-r from-green-500 to-blue-500 rounded-xl shadow-lg p-8 mb-8 text-white">
+            <div class="text-center">
+                <h2 class="text-2xl font-bold mb-4">Objetivo del Curso</h2>
+                <p class="text-lg mb-6">
+                    "Este curso te equipará con las herramientas necesarias para garantizar que los alimentos de origen animal sean seguros y de alta calidad, contribuyendo así a la salud pública y al éxito de tu carrera."
+                </p>
+                <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                    <h3 class="font-bold text-lg mb-2">Impacto en la Vida Real</h3>
+                    <p class="text-sm">
+                        Los MVZ están involucrados en diversas etapas del proceso productivo, desde la supervisión de la materia prima hasta el control de los procedimientos de higiene y la inspección final del producto terminado.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Concepts Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- HACCP Card -->
+            <div class="interactive-card bg-white rounded-xl shadow-lg p-6" onclick="openModal('haccp')">
+                <div class="concept-icon bg-red-100 rounded-full flex items-center justify-center">
+                    <svg class="w-10 h-10 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3 text-center">Sistema HACCP</h3>
+                <p class="text-gray-600 text-center mb-4">
+                    Análisis de Peligros y Puntos Críticos de Control
+                </p>
+                <div class="bg-red-50 rounded-lg p-3">
+                    <p class="text-sm text-red-700 font-medium">7 Principios Fundamentales</p>
+                </div>
+            </div>
+
+            <!-- Microbiología Card -->
+            <div class="interactive-card bg-white rounded-xl shadow-lg p-6" onclick="openModal('microbiology')">
+                <div class="concept-icon bg-blue-100 rounded-full flex items-center justify-center">
+                    <span class="text-3xl">🦠</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3 text-center">Microbiología Alimentaria</h3>
+                <p class="text-gray-600 text-center mb-4">
+                    Microorganismos patógenos y deterioro
+                </p>
+                <div class="bg-blue-50 rounded-lg p-3">
+                    <p class="text-sm text-blue-700 font-medium">Bacterias • Virus • Parásitos</p>
+                </div>
+            </div>
+
+            <!-- Contaminación Card -->
+            <div class="interactive-card bg-white rounded-xl shadow-lg p-6" onclick="openModal('contamination')">
+                <div class="concept-icon bg-yellow-100 rounded-full flex items-center justify-center">
+                    <span class="text-3xl">⚠️</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3 text-center">Tipos de Contaminación</h3>
+                <p class="text-gray-600 text-center mb-4">
+                    Física, química y biológica
+                </p>
+                <div class="bg-yellow-50 rounded-lg p-3">
+                    <p class="text-sm text-yellow-700 font-medium">Prevención y Control</p>
+                </div>
+            </div>
+
+            <!-- Buenas Prácticas Card -->
+            <div class="interactive-card bg-white rounded-xl shadow-lg p-6" onclick="openModal('practices')">
+                <div class="concept-icon bg-green-100 rounded-full flex items-center justify-center">
+                    <span class="text-3xl">✅</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3 text-center">Buenas Prácticas</h3>
+                <p class="text-gray-600 text-center mb-4">
+                    BPM y procedimientos operativos
+                </p>
+                <div class="bg-green-50 rounded-lg p-3">
+                    <p class="text-sm text-green-700 font-medium">Higiene y Manipulación</p>
+                </div>
+            </div>
+
+            <!-- Cadena de Frío Card -->
+            <div class="interactive-card bg-white rounded-xl shadow-lg p-6" onclick="openModal('coldchain')">
+                <div class="concept-icon bg-cyan-100 rounded-full flex items-center justify-center">
+                    <span class="text-3xl">🧊</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3 text-center">Cadena de Frío</h3>
+                <p class="text-gray-600 text-center mb-4">
+                    Control de temperatura y conservación
+                </p>
+                <div class="bg-cyan-50 rounded-lg p-3">
+                    <p class="text-sm text-cyan-700 font-medium">Refrigeración • Congelación</p>
+                </div>
+            </div>
+
+            <!-- Trazabilidad Card -->
+            <div class="interactive-card bg-white rounded-xl shadow-lg p-6" onclick="openModal('traceability')">
+                <div class="concept-icon bg-purple-100 rounded-full flex items-center justify-center">
+                    <span class="text-3xl">📋</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3 text-center">Trazabilidad</h3>
+                <p class="text-gray-600 text-center mb-4">
+                    Seguimiento del producto alimentario
+                </p>
+                <div class="bg-purple-50 rounded-lg p-3">
+                    <p class="text-sm text-purple-700 font-medium">Origen • Proceso • Destino</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Learning Games Section -->
+        <section class="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">🎮 Juegos Interactivos de Aprendizaje</h2>
+            <p class="text-center text-gray-600 mb-8">Aprende las definiciones clave jugando. ¡Elige tu actividad favorita!</p>
+            
+            <!-- Game Selection Buttons -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <button onclick="showGame('memorama')" class="game-btn bg-purple-500 hover:bg-purple-600 text-white p-4 rounded-lg font-bold transition-all">
+                    🧠 Memorama
+                </button>
+                <button onclick="showGame('matching')" class="game-btn bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-lg font-bold transition-all">
+                    🔗 Relacionar
+                </button>
+                <button onclick="showGame('quiz')" class="game-btn bg-green-500 hover:bg-green-600 text-white p-4 rounded-lg font-bold transition-all">
+                    ❓ Quiz Interactivo
+                </button>
+                <button onclick="showGame('flashcards')" class="game-btn bg-orange-500 hover:bg-orange-600 text-white p-4 rounded-lg font-bold transition-all">
+                    📚 Tarjetas
+                </button>
+            </div>
+
+            <!-- Memorama Game -->
+            <div id="memorama-game" class="game-container hidden">
+                <div class="text-center mb-6">
+                    <h3 class="text-xl font-bold text-purple-800 mb-2">🧠 Memorama de Definiciones</h3>
+                    <p class="text-gray-600">Encuentra las parejas de conceptos y definiciones</p>
+                    <div class="mt-4">
+                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
+                            Intentos: <span id="memorama-attempts">0</span>
+                        </span>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium ml-2">
+                            Parejas: <span id="memorama-pairs">0</span>/5
+                        </span>
+                    </div>
+                </div>
+                <div id="memorama-board" class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto">
+                    <!-- Cards will be generated by JavaScript -->
+                </div>
+                <div class="text-center mt-6">
+                    <button onclick="resetMemorama()" class="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 rounded-lg font-medium">
+                        🔄 Reiniciar Juego
+                    </button>
+                </div>
+            </div>
+
+            <!-- Matching Game -->
+            <div id="matching-game" class="game-container hidden">
+                <div class="text-center mb-6">
+                    <h3 class="text-xl font-bold text-blue-800 mb-2">🔗 Relacionar Conceptos</h3>
+                    <p class="text-gray-600">Arrastra los conceptos a sus definiciones correctas</p>
+                    <div class="mt-4">
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                            Correctas: <span id="matching-score">0</span>/10
+                        </span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="font-bold text-blue-800 mb-4 text-center">📝 Conceptos</h4>
+                        <div id="concepts-list" class="space-y-2">
+                            <!-- Concepts will be generated by JavaScript -->
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-blue-800 mb-4 text-center">📖 Definiciones</h4>
+                        <div id="definitions-list" class="space-y-2">
+                            <!-- Definitions will be generated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-6">
+                    <button onclick="resetMatching()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-medium">
+                        🔄 Reiniciar Juego
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Game -->
+            <div id="quiz-game" class="game-container hidden">
+                <div class="text-center mb-6">
+                    <h3 class="text-xl font-bold text-green-800 mb-2">❓ Quiz Interactivo</h3>
+                    <p class="text-gray-600">Responde las preguntas sobre las definiciones</p>
+                    <div class="mt-4">
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                            Pregunta: <span id="quiz-current">1</span>/10
+                        </span>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium ml-2">
+                            Puntos: <span id="quiz-score">0</span>
+                        </span>
+                    </div>
+                </div>
+                <div id="quiz-container" class="max-w-2xl mx-auto">
+                    <div id="quiz-question" class="bg-gray-50 p-6 rounded-lg mb-6">
+                        <!-- Question will be loaded here -->
+                    </div>
+                    <div id="quiz-options" class="space-y-3">
+                        <!-- Options will be loaded here -->
+                    </div>
+                    <div class="text-center mt-6">
+                        <button id="quiz-next" onclick="nextQuestion()" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium" disabled>
+                            Siguiente Pregunta
+                        </button>
+                    </div>
+                </div>
+                <div id="quiz-results" class="hidden text-center">
+                    <div class="bg-green-50 p-6 rounded-lg">
+                        <h4 class="text-2xl font-bold text-green-800 mb-2">🎉 ¡Quiz Completado!</h4>
+                        <p class="text-lg text-green-700 mb-4">Tu puntuación: <span id="final-score"></span>/100</p>
+                        <button onclick="resetQuiz()" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium">
+                            🔄 Reiniciar Quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flashcards Game -->
+            <div id="flashcards-game" class="game-container hidden">
+                <div class="text-center mb-6">
+                    <h3 class="text-xl font-bold text-orange-800 mb-2">📚 Tarjetas de Estudio</h3>
+                    <p class="text-gray-600">Haz clic en las tarjetas para ver las definiciones</p>
+                    <div class="mt-4">
+                        <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">
+                            Tarjeta: <span id="flashcard-current">1</span>/10
+                        </span>
+                    </div>
+                </div>
+                <div class="max-w-md mx-auto">
+                    <div id="flashcard" class="flashcard bg-gradient-to-br from-orange-400 to-red-500 text-white p-8 rounded-xl shadow-lg cursor-pointer transform transition-all hover:scale-105" onclick="flipCard()">
+                        <div id="flashcard-front" class="text-center">
+                            <h4 class="text-2xl font-bold mb-4">Calidad</h4>
+                            <p class="text-sm opacity-75">Haz clic para ver la definición</p>
+                        </div>
+                        <div id="flashcard-back" class="text-center hidden">
+                            <p class="text-sm leading-relaxed">La calidad se refiere al grado en el que un conjunto de características inherentes de un producto o servicio cumple con los requisitos establecidos.</p>
+                            <p class="text-xs opacity-75 mt-4">Haz clic para volver al concepto</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-between mt-6">
+                        <button onclick="previousCard()" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium">
+                            ← Anterior
+                        </button>
+                        <button onclick="nextCard()" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium">
+                            Siguiente →
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Preguntas Frecuentes</h2>
+            <div class="space-y-4">
+                <div class="border border-gray-200 rounded-lg">
+                    <button class="w-full text-left p-4 font-medium text-gray-800 hover:bg-gray-50 flex justify-between items-center" onclick="toggleFAQ(1)">
+                        ¿Qué es la inocuidad alimentaria?
+                        <span id="faq-icon-1" class="transform transition-transform">▼</span>
+                    </button>
+                    <div id="faq-content-1" class="hidden p-4 border-t border-gray-200 bg-gray-50">
+                        <p class="text-gray-600">
+                            La inocuidad alimentaria se refiere a la garantía de que los alimentos no causarán daño al consumidor cuando se preparen y/o consuman de acuerdo con el uso previsto. Incluye la prevención de contaminación por patógenos, químicos y objetos extraños.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg">
+                    <button class="w-full text-left p-4 font-medium text-gray-800 hover:bg-gray-50 flex justify-between items-center" onclick="toggleFAQ(2)">
+                        ¿Cuál es la diferencia entre calidad e inocuidad?
+                        <span id="faq-icon-2" class="transform transition-transform">▼</span>
+                    </button>
+                    <div id="faq-content-2" class="hidden p-4 border-t border-gray-200 bg-gray-50">
+                        <p class="text-gray-600">
+                            La inocuidad se enfoca en que el alimento no cause daño a la salud, mientras que la calidad se refiere a las características organolépticas, nutricionales y de satisfacción del consumidor. Un alimento puede ser inocuo pero de baja calidad, o viceversa.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg">
+                    <button class="w-full text-left p-4 font-medium text-gray-800 hover:bg-gray-50 flex justify-between items-center" onclick="toggleFAQ(3)">
+                        ¿Por qué es importante el control de temperatura?
+                        <span id="faq-icon-3" class="transform transition-transform">▼</span>
+                    </button>
+                    <div id="faq-content-3" class="hidden p-4 border-t border-gray-200 bg-gray-50">
+                        <p class="text-gray-600">
+                            La temperatura es uno de los factores más críticos para controlar el crecimiento microbiano. La "zona de peligro" (4-60°C) favorece la multiplicación rápida de bacterias patógenas. Mantener los alimentos fuera de esta zona es fundamental para la inocuidad.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <!-- HACCP Modal -->
+    <div id="haccp-modal" class="modal">
+        <div class="modal-content p-8 m-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Sistema HACCP</h2>
+                <button onclick="closeModal('haccp')" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            <div class="space-y-6">
+                <div class="bg-red-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-red-800 mb-2">¿Qué es HACCP?</h3>
+                    <p class="text-red-700">
+                        Hazard Analysis and Critical Control Points (Análisis de Peligros y Puntos Críticos de Control) es un sistema preventivo que identifica, evalúa y controla peligros significativos para la inocuidad alimentaria.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white border-l-4 border-red-500 p-4">
+                        <h4 class="font-bold mb-2">Los 7 Principios:</h4>
+                        <ol class="list-decimal list-inside space-y-1 text-sm">
+                            <li>Análisis de peligros</li>
+                            <li>Identificar PCCs</li>
+                            <li>Establecer límites críticos</li>
+                            <li>Sistema de monitoreo</li>
+                            <li>Acciones correctivas</li>
+                            <li>Verificación</li>
+                            <li>Documentación</li>
+                        </ol>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded">
+                        <h4 class="font-bold mb-2">Beneficios:</h4>
+                        <ul class="list-disc list-inside space-y-1 text-sm">
+                            <li>Prevención vs corrección</li>
+                            <li>Enfoque científico</li>
+                            <li>Reducción de costos</li>
+                            <li>Cumplimiento regulatorio</li>
+                            <li>Confianza del consumidor</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Microbiología Modal -->
+    <div id="microbiology-modal" class="modal">
+        <div class="modal-content p-8 m-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Microbiología Alimentaria</h2>
+                <button onclick="closeModal('microbiology')" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            <div class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-red-50 p-4 rounded-lg text-center">
+                        <div class="text-3xl mb-2">🦠</div>
+                        <h3 class="font-bold text-red-800">Bacterias</h3>
+                        <p class="text-sm text-red-700 mt-2">Salmonella, E. coli, Listeria</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg text-center">
+                        <div class="text-3xl mb-2">🔬</div>
+                        <h3 class="font-bold text-blue-800">Virus</h3>
+                        <p class="text-sm text-blue-700 mt-2">Norovirus, Hepatitis A</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg text-center">
+                        <div class="text-3xl mb-2">🪱</div>
+                        <h3 class="font-bold text-green-800">Parásitos</h3>
+                        <p class="text-sm text-green-700 mt-2">Toxoplasma, Anisakis</p>
+                    </div>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-yellow-800 mb-2">Factores de Crecimiento Microbiano</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                        <div>
+                            <div class="font-bold">Temperatura</div>
+                            <div class="text-sm">Zona de peligro: 4-60°C</div>
+                        </div>
+                        <div>
+                            <div class="font-bold">pH</div>
+                            <div class="text-sm">Neutro favorece crecimiento</div>
+                        </div>
+                        <div>
+                            <div class="font-bold">Humedad</div>
+                            <div class="text-sm">Aw > 0.85 riesgoso</div>
+                        </div>
+                        <div>
+                            <div class="font-bold">Tiempo</div>
+                            <div class="text-sm">Multiplicación exponencial</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contaminación Modal -->
+    <div id="contamination-modal" class="modal">
+        <div class="modal-content p-8 m-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Tipos de Contaminación</h2>
+                <button onclick="closeModal('contamination')" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            <div class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <h3 class="font-bold text-red-800 mb-3 flex items-center">
+                            <span class="mr-2">🦠</span> Biológica
+                        </h3>
+                        <ul class="text-sm text-red-700 space-y-1">
+                            <li>• Bacterias patógenas</li>
+                            <li>• Virus</li>
+                            <li>• Parásitos</li>
+                            <li>• Hongos y levaduras</li>
+                            <li>• Toxinas microbianas</li>
+                        </ul>
+                    </div>
+                    <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                        <h3 class="font-bold text-yellow-800 mb-3 flex items-center">
+                            <span class="mr-2">⚗️</span> Química
+                        </h3>
+                        <ul class="text-sm text-yellow-700 space-y-1">
+                            <li>• Pesticidas</li>
+                            <li>• Detergentes</li>
+                            <li>• Metales pesados</li>
+                            <li>• Aditivos en exceso</li>
+                            <li>• Medicamentos veterinarios</li>
+                        </ul>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                        <h3 class="font-bold text-blue-800 mb-3 flex items-center">
+                            <span class="mr-2">🔩</span> Física
+                        </h3>
+                        <ul class="text-sm text-blue-700 space-y-1">
+                            <li>• Vidrio</li>
+                            <li>• Metal</li>
+                            <li>• Plástico</li>
+                            <li>• Piedras</li>
+                            <li>• Cabello, uñas</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-gray-800 mb-2">Contaminación Cruzada</h3>
+                    <p class="text-gray-700 text-sm mb-2">
+                        Transferencia de contaminantes de un alimento, superficie o utensilio a otro alimento.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-medium text-gray-800">Directa:</h4>
+                            <p class="text-sm text-gray-600">Contacto directo entre alimentos</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-gray-800">Indirecta:</h4>
+                            <p class="text-sm text-gray-600">A través de superficies, utensilios o manipuladores</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buenas Prácticas Modal -->
+    <div id="practices-modal" class="modal">
+        <div class="modal-content p-8 m-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Buenas Prácticas de Manufactura</h2>
+                <button onclick="closeModal('practices')" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            <div class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-green-800 mb-2 flex items-center">
+                                <span class="mr-2">🧼</span> Higiene Personal
+                            </h3>
+                            <ul class="text-sm text-green-700 space-y-1">
+                                <li>• Lavado frecuente de manos</li>
+                                <li>• Uso de uniforme limpio</li>
+                                <li>• Cabello recogido y cubierto</li>
+                                <li>• Uñas cortas y limpias</li>
+                                <li>• Sin joyas ni accesorios</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-blue-800 mb-2 flex items-center">
+                                <span class="mr-2">🏭</span> Instalaciones
+                            </h3>
+                            <ul class="text-sm text-blue-700 space-y-1">
+                                <li>• Diseño sanitario</li>
+                                <li>• Superficies lisas y lavables</li>
+                                <li>• Ventilación adecuada</li>
+                                <li>• Iluminación suficiente</li>
+                                <li>• Control de plagas</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-purple-800 mb-2 flex items-center">
+                                <span class="mr-2">🔧</span> Equipos y Utensilios
+                            </h3>
+                            <ul class="text-sm text-purple-700 space-y-1">
+                                <li>• Limpieza y desinfección</li>
+                                <li>• Calibración de equipos</li>
+                                <li>• Mantenimiento preventivo</li>
+                                <li>• Materiales aptos para alimentos</li>
+                                <li>• Separación por tipo de alimento</li>
+                            </ul>
+                        </div>
+                        <div class="bg-orange-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-orange-800 mb-2 flex items-center">
+                                <span class="mr-2">📋</span> Documentación
+                            </h3>
+                            <ul class="text-sm text-orange-700 space-y-1">
+                                <li>• Procedimientos escritos</li>
+                                <li>• Registros de control</li>
+                                <li>• Capacitación del personal</li>
+                                <li>• Auditorías internas</li>
+                                <li>• Acciones correctivas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cadena de Frío Modal -->
+    <div id="coldchain-modal" class="modal">
+        <div class="modal-content p-8 m-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Cadena de Frío</h2>
+                <button onclick="closeModal('coldchain')" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            <div class="space-y-6">
+                <div class="bg-cyan-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-cyan-800 mb-2">¿Qué es la Cadena de Frío?</h3>
+                    <p class="text-cyan-700 text-sm">
+                        Sistema de conservación que mantiene los productos a baja temperatura desde la producción hasta el consumo, sin interrupciones.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="bg-blue-100 p-4 rounded-lg">
+                            <h4 class="font-bold text-blue-800 mb-2">Temperaturas de Refrigeración</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span>Carnes frescas:</span>
+                                    <span class="font-medium">0-4°C</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Lácteos:</span>
+                                    <span class="font-medium">2-8°C</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Frutas y verduras:</span>
+                                    <span class="font-medium">4-10°C</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Pescados:</span>
+                                    <span class="font-medium">-1-2°C</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-indigo-100 p-4 rounded-lg">
+                            <h4 class="font-bold text-indigo-800 mb-2">Temperaturas de Congelación</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span>Congelación doméstica:</span>
+                                    <span class="font-medium">-18°C</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Congelación comercial:</span>
+                                    <span class="font-medium">-25°C</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Ultracongelación:</span>
+                                    <span class="font-medium">-40°C</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="bg-red-100 p-4 rounded-lg">
+                            <h4 class="font-bold text-red-800 mb-2">Riesgos de Ruptura</h4>
+                            <ul class="text-sm text-red-700 space-y-1">
+                                <li>• Crecimiento microbiano</li>
+                                <li>• Pérdida de calidad</li>
+                                <li>• Deterioro organoléptico</li>
+                                <li>• Reducción de vida útil</li>
+                                <li>• Pérdidas económicas</li>
+                            </ul>
+                        </div>
+                        <div class="bg-green-100 p-4 rounded-lg">
+                            <h4 class="font-bold text-green-800 mb-2">Puntos de Control</h4>
+                            <ul class="text-sm text-green-700 space-y-1">
+                                <li>• Recepción de materias primas</li>
+                                <li>• Almacenamiento</li>
+                                <li>• Transporte</li>
+                                <li>• Exhibición en punto de venta</li>
+                                <li>• Monitoreo continuo</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trazabilidad Modal -->
+    <div id="traceability-modal" class="modal">
+        <div class="modal-content p-8 m-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Trazabilidad Alimentaria</h2>
+                <button onclick="closeModal('traceability')" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            <div class="space-y-6">
+                <div class="bg-purple-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-purple-800 mb-2">Definición</h3>
+                    <p class="text-purple-700 text-sm">
+                        Capacidad de seguir el movimiento de un alimento a través de etapas específicas de producción, transformación y distribución.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-green-50 border-l-4 border-green-500 p-4">
+                        <h4 class="font-bold text-green-800 mb-2">Trazabilidad Hacia Atrás</h4>
+                        <p class="text-sm text-green-700 mb-2">¿De dónde viene?</p>
+                        <ul class="text-xs text-green-600 space-y-1">
+                            <li>• Proveedores</li>
+                            <li>• Materias primas</li>
+                            <li>• Ingredientes</li>
+                            <li>• Lotes recibidos</li>
+                        </ul>
+                    </div>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                        <h4 class="font-bold text-blue-800 mb-2">Trazabilidad Interna</h4>
+                        <p class="text-sm text-blue-700 mb-2">¿Qué pasó aquí?</p>
+                        <ul class="text-xs text-blue-600 space-y-1">
+                            <li>• Procesos aplicados</li>
+                            <li>• Transformaciones</li>
+                            <li>• Controles realizados</li>
+                            <li>• Personal involucrado</li>
+                        </ul>
+                    </div>
+                    <div class="bg-orange-50 border-l-4 border-orange-500 p-4">
+                        <h4 class="font-bold text-orange-800 mb-2">Trazabilidad Hacia Adelante</h4>
+                        <p class="text-sm text-orange-700 mb-2">¿A dónde fue?</p>
+                        <ul class="text-xs text-orange-600 space-y-1">
+                            <li>• Clientes</li>
+                            <li>• Distribuidores</li>
+                            <li>• Puntos de venta</li>
+                            <li>• Lotes enviados</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-gray-800 mb-3">Beneficios de la Trazabilidad</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <ul class="text-sm text-gray-700 space-y-1">
+                            <li>✅ Retiro eficaz de productos</li>
+                            <li>✅ Identificación rápida de problemas</li>
+                            <li>✅ Cumplimiento regulatorio</li>
+                            <li>✅ Protección de marca</li>
+                        </ul>
+                        <ul class="text-sm text-gray-700 space-y-1">
+                            <li>✅ Confianza del consumidor</li>
+                            <li>✅ Gestión de crisis</li>
+                            <li>✅ Mejora continua</li>
+                            <li>✅ Responsabilidad legal</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Definitions data
+        const definitions = {
+            'Calidad': 'La calidad se refiere al grado en el que un conjunto de características inherentes de un producto o servicio cumple con los requisitos establecidos.',
+            'Control de calidad': 'Es el proceso orientado a cumplir con los requisitos de calidad a través de actividades operativas que garantizan que los productos o servicios cumplan con los criterios establecidos.',
+            'Aseguramiento de la calidad': 'Enfoque sistemático para proporcionar confianza de que los requisitos de calidad se cumplirán, incluyendo planificación, implementación y mantenimiento de sistemas.',
+            'Inocuidad alimentaria': 'Implica garantizar que los alimentos sean seguros para el consumo humano, sin presentar ningún riesgo para la salud del consumidor.',
+            'Sistema de gestión de la calidad (SGC)': 'Conjunto de políticas, procesos y procedimientos utilizados por una organización para asegurar que sus productos cumplan consistentemente con los requisitos.',
+            'Mejora continua': 'Enfoque constante y permanente en la optimización de los procesos, productos o servicios para incrementar la satisfacción del cliente.',
+            'Sistema de gestión de inocuidad': 'Conjunto de elementos interrelacionados que gestionan la inocuidad alimentaria identificando, evaluando y controlando peligros.',
+            'Inspección': 'Actividad que consiste en medir, examinar y comparar las características de un producto con los requisitos especificados.',
+            'Verificación': 'Evaluación objetiva de si un producto, servicio, sistema o proceso cumple con los requisitos especificados mediante pruebas y mediciones.',
+            'Alimento apto para consumo': 'Alimento que es seguro para ser consumido por humanos sin causar daño, libre de peligros químicos, físicos o biológicos.'
+        };
+
+        // Game state variables
+        let currentGame = null;
+        let memoramaState = { attempts: 0, pairs: 0, flippedCards: [], matchedPairs: [] };
+        let matchingState = { score: 0, matches: {} };
+        let quizState = { currentQuestion: 0, score: 0, questions: [] };
+        let flashcardState = { currentCard: 0 };
+
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(modalId + '-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId + '-modal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function toggleFAQ(faqNumber) {
+            const content = document.getElementById(`faq-content-${faqNumber}`);
+            const icon = document.getElementById(`faq-icon-${faqNumber}`);
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Game management functions
+        function showGame(gameType) {
+            // Hide all games
+            document.querySelectorAll('.game-container').forEach(container => {
+                container.classList.add('hidden');
+            });
+            
+            // Show selected game
+            document.getElementById(gameType + '-game').classList.remove('hidden');
+            currentGame = gameType;
+            
+            // Initialize game
+            switch(gameType) {
+                case 'memorama':
+                    initMemorama();
+                    break;
+                case 'matching':
+                    initMatching();
+                    break;
+                case 'quiz':
+                    initQuiz();
+                    break;
+                case 'flashcards':
+                    initFlashcards();
+                    break;
+            }
+        }
+
+        // MEMORAMA GAME
+        function initMemorama() {
+            memoramaState = { attempts: 0, pairs: 0, flippedCards: [], matchedPairs: [] };
+            updateMemoramaStats();
+            
+            const concepts = Object.keys(definitions).slice(0, 5);
+            const cards = [];
+            
+            // Create concept cards
+            concepts.forEach((concept, index) => {
+                cards.push({ id: index * 2, type: 'concept', content: concept, pair: index });
+                cards.push({ id: index * 2 + 1, type: 'definition', content: definitions[concept], pair: index });
+            });
+            
+            // Shuffle cards
+            for (let i = cards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cards[i], cards[j]] = [cards[j], cards[i]];
+            }
+            
+            const board = document.getElementById('memorama-board');
+            board.innerHTML = '';
+            
+            cards.forEach(card => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'memorama-card';
+                cardElement.dataset.cardId = card.id;
+                cardElement.dataset.pair = card.pair;
+                cardElement.onclick = () => flipMemoramaCard(card.id);
+                
+                cardElement.innerHTML = `
+                    <div class="memorama-card-inner">
+                        <div class="memorama-card-front bg-purple-500 text-white font-bold">
+                            <span class="text-2xl">🧠</span>
+                        </div>
+                        <div class="memorama-card-back bg-white border-2 border-purple-300 text-gray-800">
+                            <span class="font-medium">${card.type === 'concept' ? card.content : card.content.substring(0, 50) + '...'}</span>
+                        </div>
+                    </div>
+                `;
+                
+                board.appendChild(cardElement);
+            });
+        }
+
+        function flipMemoramaCard(cardId) {
+            const card = document.querySelector(`[data-card-id="${cardId}"]`);
+            if (card.classList.contains('flipped') || memoramaState.flippedCards.length >= 2) return;
+            
+            card.classList.add('flipped');
+            memoramaState.flippedCards.push(cardId);
+            
+            if (memoramaState.flippedCards.length === 2) {
+                memoramaState.attempts++;
+                updateMemoramaStats();
+                
+                setTimeout(() => {
+                    checkMemoramaMatch();
+                }, 1000);
+            }
+        }
+
+        function checkMemoramaMatch() {
+            const [card1Id, card2Id] = memoramaState.flippedCards;
+            const card1 = document.querySelector(`[data-card-id="${card1Id}"]`);
+            const card2 = document.querySelector(`[data-card-id="${card2Id}"]`);
+            
+            if (card1.dataset.pair === card2.dataset.pair) {
+                // Match found
+                memoramaState.pairs++;
+                memoramaState.matchedPairs.push(card1.dataset.pair);
+                card1.style.opacity = '0.7';
+                card2.style.opacity = '0.7';
+                
+                if (memoramaState.pairs === 5) {
+                    setTimeout(() => {
+                        alert('¡Felicidades! Has completado el memorama en ' + memoramaState.attempts + ' intentos.');
+                    }, 500);
+                }
+            } else {
+                // No match
+                card1.classList.remove('flipped');
+                card2.classList.remove('flipped');
+            }
+            
+            memoramaState.flippedCards = [];
+            updateMemoramaStats();
+        }
+
+        function updateMemoramaStats() {
+            document.getElementById('memorama-attempts').textContent = memoramaState.attempts;
+            document.getElementById('memorama-pairs').textContent = memoramaState.pairs;
+        }
+
+        function resetMemorama() {
+            initMemorama();
+        }
+
+        // MATCHING GAME
+        function initMatching() {
+            matchingState = { score: 0, matches: {} };
+            updateMatchingScore();
+            
+            const concepts = Object.keys(definitions);
+            const conceptsList = document.getElementById('concepts-list');
+            const definitionsList = document.getElementById('definitions-list');
+            
+            conceptsList.innerHTML = '';
+            definitionsList.innerHTML = '';
+            
+            // Shuffle definitions for difficulty
+            const shuffledDefinitions = [...Object.values(definitions)].sort(() => Math.random() - 0.5);
+            
+            concepts.forEach((concept, index) => {
+                const conceptElement = document.createElement('div');
+                conceptElement.className = 'draggable bg-blue-100 text-blue-800 p-3 rounded-lg font-medium cursor-grab';
+                conceptElement.draggable = true;
+                conceptElement.dataset.concept = concept;
+                conceptElement.textContent = concept;
+                conceptElement.ondragstart = (e) => handleDragStart(e);
+                conceptsList.appendChild(conceptElement);
+            });
+            
+            shuffledDefinitions.forEach((definition, index) => {
+                const definitionElement = document.createElement('div');
+                definitionElement.className = 'drop-zone p-3 rounded-lg bg-gray-50 text-sm';
+                definitionElement.dataset.definition = definition;
+                definitionElement.innerHTML = `<p class="text-gray-700">${definition}</p>`;
+                definitionElement.ondragover = (e) => handleDragOver(e);
+                definitionElement.ondrop = (e) => handleDrop(e);
+                definitionsList.appendChild(definitionElement);
+            });
+        }
+
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.dataset.concept);
+            e.target.classList.add('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.target.closest('.drop-zone').classList.add('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const dropZone = e.target.closest('.drop-zone');
+            dropZone.classList.remove('drag-over');
+            
+            const concept = e.dataTransfer.getData('text/plain');
+            const definition = dropZone.dataset.definition;
+            
+            if (definitions[concept] === definition) {
+                dropZone.classList.add('correct');
+                dropZone.innerHTML = `<p class="text-green-700 font-medium">✅ ${concept}</p><p class="text-gray-600 text-sm mt-1">${definition}</p>`;
+                matchingState.score++;
+                matchingState.matches[concept] = definition;
+                
+                // Remove the dragged concept
+                const conceptElement = document.querySelector(`[data-concept="${concept}"]`);
+                conceptElement.remove();
+                
+                updateMatchingScore();
+                
+                if (matchingState.score === 10) {
+                    setTimeout(() => {
+                        alert('¡Excelente! Has relacionado todos los conceptos correctamente.');
+                    }, 500);
+                }
+            } else {
+                // Wrong match - show feedback
+                dropZone.style.backgroundColor = '#fee2e2';
+                setTimeout(() => {
+                    dropZone.style.backgroundColor = '';
+                }, 1000);
+            }
+            
+            // Remove dragging class
+            document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
+        }
+
+        function updateMatchingScore() {
+            document.getElementById('matching-score').textContent = matchingState.score;
+        }
+
+        function resetMatching() {
+            initMatching();
+        }
+
+        // QUIZ GAME
+        function initQuiz() {
+            quizState = { currentQuestion: 0, score: 0, questions: generateQuizQuestions() };
+            document.getElementById('quiz-container').classList.remove('hidden');
+            document.getElementById('quiz-results').classList.add('hidden');
+            loadQuizQuestion();
+        }
+
+        function generateQuizQuestions() {
+            const concepts = Object.keys(definitions);
+            const questions = [];
+            
+            concepts.forEach(concept => {
+                const correctAnswer = definitions[concept];
+                const wrongAnswers = Object.values(definitions).filter(def => def !== correctAnswer).slice(0, 3);
+                const options = [correctAnswer, ...wrongAnswers].sort(() => Math.random() - 0.5);
+                
+                questions.push({
+                    question: `¿Cuál es la definición correcta de "${concept}"?`,
+                    options: options,
+                    correct: correctAnswer
+                });
+            });
+            
+            return questions.sort(() => Math.random() - 0.5);
+        }
+
+        function loadQuizQuestion() {
+            const question = quizState.questions[quizState.currentQuestion];
+            document.getElementById('quiz-current').textContent = quizState.currentQuestion + 1;
+            document.getElementById('quiz-score').textContent = quizState.score;
+            
+            document.getElementById('quiz-question').innerHTML = `
+                <h4 class="text-lg font-bold text-gray-800 mb-4">Pregunta ${quizState.currentQuestion + 1}</h4>
+                <p class="text-gray-700">${question.question}</p>
+            `;
+            
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('button');
+                optionElement.className = 'quiz-option w-full text-left p-4 bg-gray-50 hover:bg-blue-50 rounded-lg border border-gray-200 transition-all';
+                optionElement.innerHTML = `<span class="font-medium text-blue-600">${String.fromCharCode(65 + index)})</span> ${option}`;
+                optionElement.onclick = () => selectQuizAnswer(option, optionElement);
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            document.getElementById('quiz-next').disabled = true;
+        }
+
+        function selectQuizAnswer(selectedAnswer, element) {
+            const question = quizState.questions[quizState.currentQuestion];
+            const options = document.querySelectorAll('.quiz-option');
+            
+            options.forEach(option => {
+                option.disabled = true;
+                option.classList.remove('hover:bg-blue-50');
+                
+                if (option.textContent.includes(question.correct)) {
+                    option.classList.add('bg-green-100', 'border-green-500', 'text-green-800');
+                } else if (option === element && selectedAnswer !== question.correct) {
+                    option.classList.add('bg-red-100', 'border-red-500', 'text-red-800');
+                }
+            });
+            
+            if (selectedAnswer === question.correct) {
+                quizState.score += 10;
+            }
+            
+            document.getElementById('quiz-next').disabled = false;
+        }
+
+        function nextQuestion() {
+            quizState.currentQuestion++;
+            
+            if (quizState.currentQuestion >= quizState.questions.length) {
+                showQuizResults();
+            } else {
+                loadQuizQuestion();
+            }
+        }
+
+        function showQuizResults() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('quiz-results').classList.remove('hidden');
+            document.getElementById('final-score').textContent = quizState.score;
+        }
+
+        function resetQuiz() {
+            initQuiz();
+        }
+
+        // FLASHCARDS GAME
+        function initFlashcards() {
+            flashcardState = { currentCard: 0 };
+            const concepts = Object.keys(definitions);
+            flashcardState.cards = concepts.map(concept => ({
+                concept: concept,
+                definition: definitions[concept]
+            }));
+            loadFlashcard();
+        }
+
+        function loadFlashcard() {
+            const card = flashcardState.cards[flashcardState.currentCard];
+            document.getElementById('flashcard-current').textContent = flashcardState.currentCard + 1;
+            
+            document.getElementById('flashcard-front').innerHTML = `
+                <h4 class="text-2xl font-bold mb-4">${card.concept}</h4>
+                <p class="text-sm opacity-75">Haz clic para ver la definición</p>
+            `;
+            
+            document.getElementById('flashcard-back').innerHTML = `
+                <p class="text-sm leading-relaxed">${card.definition}</p>
+                <p class="text-xs opacity-75 mt-4">Haz clic para volver al concepto</p>
+            `;
+            
+            // Reset card to front
+            document.getElementById('flashcard-front').classList.remove('hidden');
+            document.getElementById('flashcard-back').classList.add('hidden');
+        }
+
+        function flipCard() {
+            const front = document.getElementById('flashcard-front');
+            const back = document.getElementById('flashcard-back');
+            
+            if (front.classList.contains('hidden')) {
+                front.classList.remove('hidden');
+                back.classList.add('hidden');
+            } else {
+                front.classList.add('hidden');
+                back.classList.remove('hidden');
+            }
+        }
+
+        function nextCard() {
+            flashcardState.currentCard = (flashcardState.currentCard + 1) % flashcardState.cards.length;
+            loadFlashcard();
+        }
+
+        function previousCard() {
+            flashcardState.currentCard = flashcardState.currentCard === 0 ? flashcardState.cards.length - 1 : flashcardState.currentCard - 1;
+            loadFlashcard();
+        }
+
+        // Event listeners
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const activeModal = document.querySelector('.modal.active');
+                if (activeModal) {
+                    activeModal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        });
+
+        // Initialize first game on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            showGame('memorama');
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96eb4f0585176b91',t:'MTc1NTEyMDU3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
